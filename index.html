@@ -448,12 +448,13 @@
             display: none;
         }
 
-        #treatment-text {
-            background-color: #eef9f5;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 1px;
-        }
+#treatment-text {
+    background-color: #eef9f5;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 1px;
+    text-align: center; /* ← 中央揃えを追加 */
+}
 
         .highlight-background {
             background-color: #f9f9d6;
@@ -1116,6 +1117,8 @@
             <button type="button" onclick="selectSymptom(this, 'treatment3')" data-price="15000">店主おすすめ75分</button>
         </div>
 
+        <div id="treatment-text" style="display: none; margin-bottom: 10px;"></div>
+
         <div class="label">希望日時<span class="required">必須</span>
             <img class="paw-img-label tm"
                 src="https://www.dropbox.com/scl/fi/xtz6o6pq9muagpbfjns0j/1200.png?rlkey=3lz84x6i1sznjg0wuo4qjf5jf&st=g9orthgq&raw=1"
@@ -1376,12 +1379,15 @@
 
             // 選択されたオプションを取得
             const updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
+            const treatmentText = document.getElementById('treatment-text');
 
             if (updatedSelectedButtons.length === 0) {
                 // すべてのボタンの選択が解除された場合、メニュー時間を0にリセット
                 selectedMenuTime = 0;
                 selectedSymptom = null; // 選択されたメニューをリセット
                 menuPrice = 0; // メニュー価格をリセット
+                treatmentText.style.display = 'none';
+                return; // ここで処理を終了
             } else {
                 // 1つだけ選択状態にする
                 if (updatedSelectedButtons.length > 1) {
@@ -1401,28 +1407,21 @@
             // カレンダーを更新するために取得する日付を渡す
             fetchAvailability(currentDate);
 
-            // トリートメントテキストを表示
-            const treatmentText = document.getElementById('treatment-text');
-
-            if (treatmentId === 'treatment1') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：10分</strong></div>`;
-            } else if (treatmentId === 'treatment2') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong</div>`;
-            } else if (treatmentId === 'treatment3') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
-            } else if (treatmentId === 'treatment4') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
-            } else if (treatmentId === 'treatment5') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
-            } else if (treatmentId === 'treatment6') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
-            } else if (treatmentId === 'treatment7') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
-            } else if (treatmentId === 'treatment8') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>施術時間：15分</strong></div>`;
+if (treatmentId === 'treatment1') {
+    treatmentText.innerHTML = `<div style="text-align: center;"><strong>全身マッサージ60分</strong><br>腰痛、肩こりなど様々なお悩みがございますが、<br>当店では全身を揉みほぐすことで根本的な原因を確認し、お客様にあった施術を行います。</div>`;
+} else if (treatmentId === 'treatment2') {
+    treatmentText.innerHTML = `<div style="text-align: center;"><strong>全身マッサージ＋オステオパシー90分</strong><br>お客様の悩みに沿った身体への施術<br>＋<br>心・身体に溜まったストレスを解消する施術<br>の贅沢なセットメニューです✨</div>`;
+} else if (treatmentId === 'treatment3') {
+    treatmentText.innerHTML = `<div style="text-align: center;"><strong>店主おすすめ75分</strong><br>オステオパシー体験コースです✨<br>まだ体験されたことがない方は<br>手揉みとセットになったお得なメニューです♪</div>`;
             } else {
                 treatmentText.innerHTML = '';
             }
+
+            // `treatment-text` を選択されたボタンの直後に移動
+            button.parentNode.insertBefore(treatmentText, button.nextSibling);
+
+            // トリートメントテキストを表示
+            treatmentText.style.display = 'block';
 
             // 選択されたメニューの名前と価格を取得
             const symptomName = button.textContent;  // ボタンのテキストを取得
